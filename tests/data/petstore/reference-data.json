@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Dogs"
+    },
+    {
+      "id": 2,
+      "name": "Cats"
+    },
+    {
+      "id": 3,
+      "name": "Birds"
+    },
+    {
+      "id": 4,
+      "name": "Fish"
+    },
+    {
+      "id": 5,
+      "name": "Rabbits"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "friendly"
+    },
+    {
+      "id": 2,
+      "name": "trained"
+    },
+    {
+      "id": 3,
+      "name": "playful"
+    },
+    {
+      "id": 4,
+      "name": "energetic"
+    },
+    {
+      "id": 5,
+      "name": "singing"
+    },
+    {
+      "id": 6,
+      "name": "colorful"
+    },
+    {
+      "id": 7,
+      "name": "saltwater"
+    },
+    {
+      "id": 8,
+      "name": "updated"
+    }
+  ],
+  "statuses": [
+    "available",
+    "pending",
+    "sold"
+  ]
+}

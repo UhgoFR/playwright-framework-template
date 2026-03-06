@@ -1,0 +1,148 @@
+{
+  "validPets": [
+    {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "Dogs"
+      },
+      "name": "Buddy",
+      "photoUrls": [
+        "https://example.com/photos/buddy1.jpg",
+        "https://example.com/photos/buddy2.jpg"
+      ],
+      "tags": [
+        {
+          "id": 1,
+          "name": "friendly"
+        },
+        {
+          "id": 2,
+          "name": "trained"
+        }
+      ],
+      "status": "available"
+    },
+    {
+      "id": 2,
+      "category": {
+        "id": 2,
+        "name": "Cats"
+      },
+      "name": "Whiskers",
+      "photoUrls": [
+        "https://example.com/photos/whiskers1.jpg"
+      ],
+      "tags": [
+        {
+          "id": 3,
+          "name": "playful"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "category": {
+        "id": 1,
+        "name": "Dogs"
+      },
+      "name": "Max",
+      "photoUrls": [
+        "https://example.com/photos/max1.jpg"
+      ],
+      "tags": [
+        {
+          "id": 4,
+          "name": "energetic"
+        }
+      ],
+      "status": "sold"
+    }
+  ],
+  "newPetRequests": [
+    {
+      "category": {
+        "id": 3,
+        "name": "Birds"
+      },
+      "name": "Tweety",
+      "photoUrls": [
+        "https://example.com/photos/tweety1.jpg"
+      ],
+      "tags": [
+        {
+          "id": 5,
+          "name": "singing"
+        }
+      ],
+      "status": "available"
+    },
+    {
+      "category": {
+        "id": 4,
+        "name": "Fish"
+      },
+      "name": "Nemo",
+      "photoUrls": [
+        "https://example.com/photos/nemo1.jpg",
+        "https://example.com/photos/nemo2.jpg"
+      ],
+      "tags": [
+        {
+          "id": 6,
+          "name": "colorful"
+        },
+        {
+          "id": 7,
+          "name": "saltwater"
+        }
+      ],
+      "status": "available"
+    }
+  ],
+  "updatePetRequests": [
+    {
+      "id": 1,
+      "category": {
+        "id": 1,
+        "name": "Dogs"
+      },
+      "name": "Buddy Updated",
+      "photoUrls": [
+        "https://example.com/photos/buddy1.jpg",
+        "https://example.com/photos/buddy3.jpg"
+      ],
+      "tags": [
+        {
+          "id": 1,
+          "name": "friendly"
+        },
+        {
+          "id": 2,
+          "name": "trained"
+        },
+        {
+          "id": 8,
+          "name": "updated"
+        }
+      ],
+      "status": "sold"
+    }
+  ],
+  "invalidPets": [
+    {
+      "name": "",
+      "photoUrls": [],
+      "status": "available"
+    },
+    {
+      "name": "No Photo Pet",
+      "photoUrls": []
+    },
+    {
+      "photoUrls": ["https://example.com/photo.jpg"],
+      "status": "available"
+    }
+  ]
+}
