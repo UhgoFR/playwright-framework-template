@@ -12,7 +12,7 @@ test.describe('Sample Web Tests', () => {
 
   test('TC001_givenValidUrl_whenNavigatingToPage_thenPageLoadsSuccessfully', async ({ page }) => {
     // Given: Valid URL
-    const url = 'https://example.com';
+    const url = 'https://example.com/';
 
     // When: Navigating to the page
     await basePage.navigateTo(url);
