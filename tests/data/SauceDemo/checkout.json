@@ -1,0 +1,53 @@
+{
+  "validCustomer": {
+    "firstName": "Test",
+    "lastName": "User",
+    "postalCode": "12345"
+  },
+  "invalidCustomer": {
+    "firstName": "",
+    "lastName": "",
+    "postalCode": ""
+  },
+  "missingFirstName": {
+    "firstName": "",
+    "lastName": "User",
+    "postalCode": "12345"
+  },
+  "missingLastName": {
+    "firstName": "Test",
+    "lastName": "",
+    "postalCode": "12345"
+  },
+  "missingPostalCode": {
+    "firstName": "Test",
+    "lastName": "User",
+    "postalCode": ""
+  },
+  "expectedTotals": {
+    "backpack": {
+      "itemTotal": "$29.99",
+      "tax": "$2.40",
+      "total": "$32.39"
+    },
+    "bikeLight": {
+      "itemTotal": "$9.99",
+      "tax": "$0.80",
+      "total": "$10.79"
+    },
+    "multipleItems": {
+      "itemTotal": "$55.97",
+      "tax": "$4.48",
+      "total": "$60.45"
+    }
+  },
+  "successMessages": {
+    "orderComplete": "Thank you for your order!",
+    "orderDispatched": "Your order has been dispatched, and will arrive just as fast as the pony can get there!"
+  },
+  "errorMessages": {
+    "firstNameRequired": "Error: First Name is required",
+    "lastNameRequired": "Error: Last Name is required",
+    "postalCodeRequired": "Error: Postal Code is required"
+  }
+}
