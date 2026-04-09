@@ -3,7 +3,7 @@ import { LoginPage } from '@/web/pages/SauceDemo/LoginPage';
 import { InventoryPage } from '@/web/pages/SauceDemo/InventoryPage';
 import userData from '../../data/SauceDemo/users.json';
 
-test.describe('SauceDemo Authentication', () => {
+test.describe('SauceDemo Authentication', { tag: '@SauceDemo' }, () => {
   let loginPage: LoginPage;
   let inventoryPage: InventoryPage;
 

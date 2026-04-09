@@ -27,178 +27,258 @@ export class BasePage {
 
   /**
    * Waits for an element to be present in the DOM.
-   * @param selector - CSS selector of the element to wait for
+   * @param selector - CSS selector or Locator of the element to wait for
    * @param timeout - Maximum time to wait in milliseconds (default: 10000)
    */
-  async waitForElement(selector: string, timeout: number = 10000): Promise<void> {
-    await this.page.waitForSelector(selector, { timeout });
+  async waitForElement(selector: string | Locator, timeout: number = 10000): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.waitForSelector(selector, { timeout });
+    } else {
+      await selector.waitFor({ state: 'attached', timeout });
+    }
   }
 
   /**
    * Waits for an element to become visible on the page.
-   * @param selector - CSS selector of the element to wait for
+   * @param selector - CSS selector or Locator of the element to wait for
    * @param timeout - Maximum time to wait in milliseconds (default: 10000)
    */
-  async waitForElementToBeVisible(selector: string, timeout: number = 10000): Promise<void> {
-    await this.page.waitForSelector(selector, { state: 'visible', timeout });
+  async waitForElementToBeVisible(selector: string | Locator, timeout: number = 10000): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.waitForSelector(selector, { state: 'visible', timeout });
+    } else {
+      await selector.waitFor({ state: 'visible', timeout });
+    }
   }
 
   /**
    * Waits for an element to become hidden on the page.
-   * @param selector - CSS selector of the element to wait for
+   * @param selector - CSS selector or Locator of the element to wait for
    * @param timeout - Maximum time to wait in milliseconds (default: 10000)
    */
-  async waitForElementToBeHidden(selector: string, timeout: number = 10000): Promise<void> {
-    await this.page.waitForSelector(selector, { state: 'hidden', timeout });
+  async waitForElementToBeHidden(selector: string | Locator, timeout: number = 10000): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.waitForSelector(selector, { state: 'hidden', timeout });
+    } else {
+      await selector.waitFor({ state: 'hidden', timeout });
+    }
   }
 
   /**
    * Gets the text content of an element.
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @returns Promise resolving to the element's text content
    */
-  async getElementText(selector: string): Promise<string> {
-    return await this.page.textContent(selector) || '';
+  async getElementText(selector: string | Locator): Promise<string> {
+    if (typeof selector === 'string') {
+      return await this.page.textContent(selector) || '';
+    } else {
+      return await selector.textContent() || '';
+    }
   }
 
   /**
    * Gets the inner text of an element (includes text from child elements).
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @returns Promise resolving to the element's inner text
    */
-  async getElementInnerText(selector: string): Promise<string> {
-    return await this.page.innerText(selector);
+  async getElementInnerText(selector: string | Locator): Promise<string> {
+    if (typeof selector === 'string') {
+      return await this.page.innerText(selector);
+    } else {
+      return await selector.innerText();
+    }
   }
 
   /**
    * Gets the value of an element's attribute.
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @param attribute - Name of the attribute to get
    * @returns Promise resolving to the attribute value or null if not found
    */
-  async getElementAttribute(selector: string, attribute: string): Promise<string | null> {
-    return await this.page.getAttribute(selector, attribute);
+  async getElementAttribute(selector: string | Locator, attribute: string): Promise<string | null> {
+    if (typeof selector === 'string') {
+      return await this.page.getAttribute(selector, attribute);
+    } else {
+      return await selector.getAttribute(attribute);
+    }
   }
 
   /**
    * Checks if an element is visible on the page.
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @returns Promise resolving to true if element is visible
    */
-  async isElementVisible(selector: string): Promise<boolean> {
-    return await this.page.isVisible(selector);
+  async isElementVisible(selector: string | Locator): Promise<boolean> {
+    if (typeof selector === 'string') {
+      return await this.page.isVisible(selector);
+    } else {
+      return await selector.isVisible();
+    }
   }
 
   /**
    * Checks if an element is enabled (not disabled).
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @returns Promise resolving to true if element is enabled
    */
-  async isElementEnabled(selector: string): Promise<boolean> {
-    return await this.page.isEnabled(selector);
+  async isElementEnabled(selector: string | Locator): Promise<boolean> {
+    if (typeof selector === 'string') {
+      return await this.page.isEnabled(selector);
+    } else {
+      return await selector.isEnabled();
+    }
   }
 
   /**
    * Checks if a checkbox or radio button is checked.
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @returns Promise resolving to true if element is checked
    */
-  async isElementChecked(selector: string): Promise<boolean> {
-    return await this.page.isChecked(selector);
+  async isElementChecked(selector: string | Locator): Promise<boolean> {
+    if (typeof selector === 'string') {
+      return await this.page.isChecked(selector);
+    } else {
+      return await selector.isChecked();
+    }
   }
 
   /**
    * Clicks on an element.
-   * @param selector - CSS selector of the element to click
+   * @param selector - CSS selector or Locator of the element to click
    * @param options - Optional click options (force, timeout)
    */
-  async clickElement(selector: string, options?: { force?: boolean; timeout?: number }): Promise<void> {
-    await this.page.click(selector, options);
+  async clickElement(selector: string | Locator, options?: { force?: boolean; timeout?: number }): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.click(selector, options);
+    } else {
+      await selector.click(options);
+    }
   }
 
   /**
    * Double-clicks on an element.
-   * @param selector - CSS selector of the element to double-click
+   * @param selector - CSS selector or Locator of the element to double-click
    */
-  async doubleClickElement(selector: string): Promise<void> {
-    await this.page.dblclick(selector);
+  async doubleClickElement(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.dblclick(selector);
+    } else {
+      await selector.dblclick();
+    }
   }
 
   /**
    * Right-clicks on an element (context menu click).
-   * @param selector - CSS selector of the element to right-click
+   * @param selector - CSS selector or Locator of the element to right-click
    */
-  async rightClickElement(selector: string): Promise<void> {
-    await this.page.click(selector, { button: 'right' });
+  async rightClickElement(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.click(selector, { button: 'right' });
+    } else {
+      await selector.click({ button: 'right' });
+    }
   }
 
   /**
    * Hovers the mouse over an element.
-   * @param selector - CSS selector of the element to hover
+   * @param selector - CSS selector or Locator of the element to hover
    */
-  async hoverElement(selector: string): Promise<void> {
-    await this.page.hover(selector);
+  async hoverElement(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.hover(selector);
+    } else {
+      await selector.hover();
+    }
   }
 
   /**
    * Fills an input field with the specified value.
-   * @param selector - CSS selector of the input element
+   * @param selector - CSS selector or Locator of the input element
    * @param value - The value to fill in the input
    */
-  async fillInput(selector: string, value: string): Promise<void> {
-    await this.page.fill(selector, value);
+  async fillInput(selector: string | Locator, value: string): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.fill(selector, value);
+    } else {
+      await selector.fill(value);
+    }
   }
 
   /**
    * Types text character by character into an element.
-   * @param selector - CSS selector of the element
+   * @param selector - CSS selector or Locator of the element
    * @param text - The text to type
    * @param delay - Optional delay between keystrokes in milliseconds
    */
-  async typeText(selector: string, text: string, delay?: number): Promise<void> {
-    await this.page.type(selector, text, { delay });
+  async typeText(selector: string | Locator, text: string, delay?: number): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.type(selector, text, { delay });
+    } else {
+      await selector.type(text, { delay });
+    }
   }
 
   /**
    * Clears the content of an input field.
-   * @param selector - CSS selector of the input element
+   * @param selector - CSS selector or Locator of the input element
    */
-  async clearInput(selector: string): Promise<void> {
-    await this.page.fill(selector, '');
+  async clearInput(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.fill(selector, '');
+    } else {
+      await selector.fill('');
+    }
   }
 
   /**
    * Selects an option from a dropdown/select element.
-   * @param selector - CSS selector of the select element
+   * @param selector - CSS selector or Locator of the select element
    * @param value - The value of the option to select
    */
-  async selectDropdownOption(selector: string, value: string): Promise<void> {
-    await this.page.selectOption(selector, value);
+  async selectDropdownOption(selector: string | Locator, value: string): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.selectOption(selector, value);
+    } else {
+      await selector.selectOption(value);
+    }
   }
 
   /**
    * Checks a checkbox element.
-   * @param selector - CSS selector of the checkbox element
+   * @param selector - CSS selector or Locator of the checkbox element
    */
-  async checkCheckbox(selector: string): Promise<void> {
-    await this.page.check(selector);
+  async checkCheckbox(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.check(selector);
+    } else {
+      await selector.check();
+    }
   }
 
   /**
    * Unchecks a checkbox element.
-   * @param selector - CSS selector of the checkbox element
+   * @param selector - CSS selector or Locator of the checkbox element
    */
-  async uncheckCheckbox(selector: string): Promise<void> {
-    await this.page.uncheck(selector);
+  async uncheckCheckbox(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.uncheck(selector);
+    } else {
+      await selector.uncheck();
+    }
   }
 
   /**
    * Uploads a file to an input element.
-   * @param selector - CSS selector of the file input element
+   * @param selector - CSS selector or Locator of the file input element
    * @param filePath - Path to the file to upload
    */
-  async uploadFile(selector: string, filePath: string): Promise<void> {
-    await this.page.setInputFiles(selector, filePath);
+  async uploadFile(selector: string | Locator, filePath: string): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.setInputFiles(selector, filePath);
+    } else {
+      await selector.setInputFiles(filePath);
+    }
   }
 
   /**
@@ -295,10 +375,14 @@ export class BasePage {
 
   /**
    * Scrolls an element into view if it's not visible.
-   * @param selector - CSS selector of the element to scroll
+   * @param selector - CSS selector or Locator of the element to scroll
    */
-  async scrollElementIntoView(selector: string): Promise<void> {
-    await this.page.locator(selector).scrollIntoViewIfNeeded();
+  async scrollElementIntoView(selector: string | Locator): Promise<void> {
+    if (typeof selector === 'string') {
+      await this.page.locator(selector).scrollIntoViewIfNeeded();
+    } else {
+      await selector.scrollIntoViewIfNeeded();
+    }
   }
 
   /**
@@ -326,20 +410,28 @@ export class BasePage {
 
   /**
    * Counts the number of elements matching the selector.
-   * @param selector - CSS selector to count
+   * @param selector - CSS selector or Locator to count
    * @returns Promise resolving to the element count
    */
-  async countElements(selector: string): Promise<number> {
-    return await this.page.locator(selector).count();
+  async countElements(selector: string | Locator): Promise<number> {
+    if (typeof selector === 'string') {
+      return await this.page.locator(selector).count();
+    } else {
+      return await selector.count();
+    }
   }
 
   /**
    * Gets the text content of all elements matching the selector.
-   * @param selector - CSS selector to match
+   * @param selector - CSS selector or Locator to match
    * @returns Promise resolving to an array of text contents
    */
-  async getAllElementTexts(selector: string): Promise<string[]> {
-    return await this.page.locator(selector).allTextContents();
+  async getAllElementTexts(selector: string | Locator): Promise<string[]> {
+    if (typeof selector === 'string') {
+      return await this.page.locator(selector).allTextContents();
+    } else {
+      return await selector.allTextContents();
+    }
   }
 
   /**

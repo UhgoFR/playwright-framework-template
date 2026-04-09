@@ -7,7 +7,7 @@ import userData from '../../data/SauceDemo/users.json';
 import productData from '../../data/SauceDemo/products.json';
 import checkoutData from '../../data/SauceDemo/checkout.json';
 
-test.describe('SauceDemo Checkout Flow', () => {
+test.describe('SauceDemo Checkout Flow', { tag: '@SauceDemo' }, () => {
   let loginPage: LoginPage;
   let inventoryPage: InventoryPage;
   let cartPage: CartPage;

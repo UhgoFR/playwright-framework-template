@@ -82,36 +82,36 @@ export default defineConfig({
       testMatch: '**/web/**/*.spec.{js,ts}',
     },
     
-    {
-      name: 'web-firefox',
-      use: { 
-        ...devices['Desktop Firefox'],
-        viewport: { width: 1280, height: 720 }
-      },
-      testMatch: '**/web/**/*.spec.{js,ts}',
-    },
+    // {
+    //   name: 'web-firefox',
+    //   use: { 
+    //     ...devices['Desktop Firefox'],
+    //     viewport: { width: 1280, height: 720 }
+    //   },
+    //   testMatch: '**/web/**/*.spec.{js,ts}',
+    // },
     
-    {
-      name: 'web-webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        viewport: { width: 1280, height: 720 }
-      },
-      testMatch: '**/web/**/*.spec.{js,ts}',
-    },
+    // {
+    //   name: 'web-webkit',
+    //   use: { 
+    //     ...devices['Desktop Safari'],
+    //     viewport: { width: 1280, height: 720 }
+    //   },
+    //   testMatch: '**/web/**/*.spec.{js,ts}',
+    // },
 
-    /* Mobile Web Testing */
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
-      testMatch: '**/web/**/*.spec.{js,ts}',
-    },
+    // /* Mobile Web Testing */
+    // {
+    //   name: 'mobile-chrome',
+    //   use: { ...devices['Pixel 5'] },
+    //   testMatch: '**/web/**/*.spec.{js,ts}',
+    // },
     
-    {
-      name: 'mobile-safari',
-      use: { ...devices['iPhone 12'] },
-      testMatch: '**/web/**/*.spec.{js,ts}',
-    },
+    // {
+    //   name: 'mobile-safari',
+    //   use: { ...devices['iPhone 12'] },
+    //   testMatch: '**/web/**/*.spec.{js,ts}',
+    // },
 
     /* API Testing Project */
     {

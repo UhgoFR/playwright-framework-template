@@ -1,20 +1,28 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../BasePage';
 
 export class LoginPage extends BasePage {
   readonly page: Page;
 
-  // Selectores
-  private readonly usernameInput = '[data-test="username"]';
-  private readonly passwordInput = '[data-test="password"]';
-  private readonly loginButton = '[data-test="login-button"]';
-  private readonly errorMessage = '[data-test="error"]';
-  private readonly acceptedUsernamesHeader = 'h4:has-text("Accepted usernames are:")';
-  private readonly passwordHeader = 'h4:has-text("Password for all users:")';
+  // Locators
+  private readonly usernameInput: Locator;
+  private readonly passwordInput: Locator;
+  private readonly loginButton: Locator;
+  private readonly errorMessage: Locator;
+  private readonly acceptedUsernamesHeader: Locator;
+  private readonly passwordHeader: Locator;
 
   constructor(page: Page) {
     super(page);
     this.page = page;
+    
+    // Inicializar locators
+    this.usernameInput = page.locator('[data-test="username"]');
+    this.passwordInput = page.locator('[data-test="password"]');
+    this.loginButton = page.locator('[data-test="login-button"]');
+    this.errorMessage = page.locator('[data-test="error"]');
+    this.acceptedUsernamesHeader = page.locator('h4:has-text("Accepted usernames are:")');
+    this.passwordHeader = page.locator('h4:has-text("Password for all users:")');
   }
 
   // Métodos específicos de la página
@@ -24,7 +32,7 @@ export class LoginPage extends BasePage {
   }
 
   async login(username: string, password: string): Promise<void> {
-    await this.waitForElement(this.usernameInput);
+    await this.waitForElementToBeVisible(this.usernameInput);
     await this.fillInput(this.usernameInput, username);
     await this.fillInput(this.passwordInput, password);
     await this.clickElement(this.loginButton);

@@ -4,7 +4,7 @@ import { InventoryPage } from '@/web/pages/SauceDemo/InventoryPage';
 import userData from '../../data/SauceDemo/users.json';
 import productData from '../../data/SauceDemo/products.json';
 
-test.describe('SauceDemo Inventory', () => {
+test.describe('SauceDemo Inventory', { tag: '@SauceDemo' }, () => {
   let loginPage: LoginPage;
   let inventoryPage: InventoryPage;
 

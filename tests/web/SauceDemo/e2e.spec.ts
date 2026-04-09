@@ -7,7 +7,7 @@ import userData from '../../data/SauceDemo/users.json';
 import productData from '../../data/SauceDemo/products.json';
 import checkoutData from '../../data/SauceDemo/checkout.json';
 
-test.describe('SauceDemo End-to-End Tests', () => {
+test.describe('SauceDemo End-to-End Tests', { tag: '@SauceDemo' }, () => {
   let loginPage: LoginPage;
   let inventoryPage: InventoryPage;
   let cartPage: CartPage;

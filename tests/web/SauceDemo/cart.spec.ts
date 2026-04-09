@@ -5,7 +5,7 @@ import { CartPage } from '@/web/pages/SauceDemo/CartPage';
 import userData from '../../data/SauceDemo/users.json';
 import productData from '../../data/SauceDemo/products.json';
 
-test.describe('SauceDemo Shopping Cart', () => {
+test.describe('SauceDemo Shopping Cart', { tag: '@SauceDemo' }, () => {
   let loginPage: LoginPage;
   let inventoryPage: InventoryPage;
   let cartPage: CartPage;

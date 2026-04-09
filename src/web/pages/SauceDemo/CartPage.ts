@@ -1,67 +1,74 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../BasePage';
 
 export class CartPage extends BasePage {
   readonly page: Page;
 
-  // Selectores
-  private readonly cartTitle = '.title';
-  private readonly cartItems = '.cart_item';
-  private readonly itemName = '.inventory_item_name';
-  private readonly itemPrice = '.inventory_item_price';
-  private readonly itemQuantity = '.cart_quantity';
-  private readonly removeButton = '[data-test^="remove-"]';
-  private readonly continueShoppingButton = '[data-test="continue-shopping"]';
-  private readonly checkoutButton = '[data-test="checkout"]';
+  // Locators
+  private readonly cartTitle: Locator;
+  private readonly cartItems: Locator;
+  private readonly itemName: Locator;
+  private readonly itemPrice: Locator;
+  private readonly itemQuantity: Locator;
+  private readonly removeButton: Locator;
+  private readonly continueShoppingButton: Locator;
+  private readonly checkoutButton: Locator;
 
   constructor(page: Page) {
     super(page);
     this.page = page;
+    
+    // Inicializar locators
+    this.cartTitle = page.locator('.title');
+    this.cartItems = page.locator('.cart_item');
+    this.itemName = page.locator('.inventory_item_name');
+    this.itemPrice = page.locator('.inventory_item_price');
+    this.itemQuantity = page.locator('.cart_quantity');
+    this.removeButton = page.locator('[data-test^="remove-"]');
+    this.continueShoppingButton = page.locator('[data-test="continue-shopping"]');
+    this.checkoutButton = page.locator('[data-test="checkout"]');
   }
 
   // Métodos específicos de la página
   async waitForPageToLoad(): Promise<void> {
-    await this.waitForElementToBeVisible(this.cartTitle);
+    await this.cartTitle.waitFor({ state: 'visible' });
     await this.waitForURLContains('cart.html');
   }
 
   async getCartItemCount(): Promise<number> {
-    return await this.countElements(this.cartItems);
+    return await this.cartItems.count();
   }
 
   async getAllCartItems(): Promise<string[]> {
-    return await this.getAllElementTexts(this.itemName);
+    return await this.itemName.allTextContents();
   }
 
   async isItemInCart(itemName: string): Promise<boolean> {
-    const itemSelector = `${this.cartItems}:has-text("${itemName}")`;
-    return await this.isElementVisible(itemSelector);
+    const cartItem = this.cartItems.filter({ hasText: itemName });
+    return await cartItem.isVisible();
   }
 
   async getItemPrice(itemName: string): Promise<string> {
-    const itemSelector = `${this.cartItems}:has-text("${itemName}")`;
-    const priceSelector = `${itemSelector} ${this.itemPrice}`;
-    return await this.getElementText(priceSelector);
+    const cartItem = this.cartItems.filter({ hasText: itemName });
+    return await cartItem.locator('.inventory_item_price').textContent() || '';
   }
 
   async getItemQuantity(itemName: string): Promise<string> {
-    const itemSelector = `${this.cartItems}:has-text("${itemName}")`;
-    const quantitySelector = `${itemSelector} ${this.itemQuantity}`;
-    return await this.getElementText(quantitySelector);
+    const cartItem = this.cartItems.filter({ hasText: itemName });
+    return await cartItem.locator('.cart_quantity').textContent() || '';
   }
 
   async removeItemFromCart(itemName: string): Promise<void> {
-    const itemSelector = `${this.cartItems}:has-text("${itemName}")`;
-    const removeSelector = `${itemSelector} ${this.removeButton}`;
-    await this.clickElement(removeSelector);
+    const cartItem = this.cartItems.filter({ hasText: itemName });
+    await cartItem.locator('[data-test^="remove-"]').click();
   }
 
   async continueShopping(): Promise<void> {
-    await this.clickElement(this.continueShoppingButton);
+    await this.continueShoppingButton.click();
   }
 
   async proceedToCheckout(): Promise<void> {
-    await this.clickElement(this.checkoutButton);
+    await this.checkoutButton.click();
   }
 
   async isCartEmpty(): Promise<boolean> {
@@ -69,10 +76,10 @@ export class CartPage extends BasePage {
   }
 
   async isCheckoutButtonVisible(): Promise<boolean> {
-    return await this.isElementVisible(this.checkoutButton);
+    return await this.checkoutButton.isVisible();
   }
 
   async isContinueShoppingButtonVisible(): Promise<boolean> {
-    return await this.isElementVisible(this.continueShoppingButton);
+    return await this.continueShoppingButton.isVisible();
   }
 }
