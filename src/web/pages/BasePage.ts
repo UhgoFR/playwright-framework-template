@@ -13,6 +13,27 @@ export class BasePage {
   /**
    * Creates an instance of BasePage.
    * @param page - The Playwright Page object
+   * 
+   * @remarks
+   * When extending this class, declare all page elements as `private readonly` properties of type `Locator`
+   * and initialize them in the constructor using `page.locator()`, `page.getByRole()`, etc.
+   * 
+   * @example
+   * ```typescript
+   * export class LoginPage extends BasePage {
+   *   private readonly usernameInput: Locator;
+   *   private readonly loginButton: Locator;
+   * 
+   *   constructor(page: Page) {
+   *     super(page);
+   *     this.page = page;
+   *     
+   *     // Initialize locators in constructor
+   *     this.usernameInput = page.locator('[data-test="username"]');
+   *     this.loginButton = page.getByRole('button', { name: 'Login' });
+   *   }
+   * }
+   * ```
    */
   constructor(page: Page) {
     this.page = page;

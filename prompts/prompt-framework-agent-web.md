@@ -64,26 +64,41 @@ Recibirás como input una URL de un sitio web para analizar y automatizar.
 #### 4.2. Extensión de BasePage
 - Cada página debe extender la clase `BasePage` ubicada en `src/web/pages/BasePage.ts`
 - Sigue el patrón de Page Object Model
+- **IMPORTANTE**: Declara todos los elementos como `private readonly` de tipo `Locator` e inicialízalos en el constructor
 - Ejemplo de estructura:
   ```typescript
-  import { Page } from '@playwright/test';
+  import { Page, Locator } from '@playwright/test';
   import { BasePage } from '../BasePage';
 
   export class <NombrePagina>Page extends BasePage {
     readonly page: Page;
 
-    // Selectores
-    private readonly <selectorName> = '<css selector>';
+    // Declarar locators como private readonly de tipo Locator
+    private readonly usernameInput: Locator;
+    private readonly loginButton: Locator;
+    private readonly errorMessage: Locator;
     
     constructor(page: Page) {
       super(page);
       this.page = page;
+      
+      // Inicializar locators en el constructor
+      // Priorizar localizadores integrados de Playwright
+      this.usernameInput = page.getByLabel('Username');
+      this.loginButton = page.getByRole('button', { name: 'Login' });
+      this.errorMessage = page.getByTestId('error-message');
     }
 
     // Métodos específicos de la página
-    async <metodoPagina>(): Promise<void> {
-      await this.waitForElement(this.<selectorName>);
-      await this.clickElement(this.<selectorName>);
+    // Usar métodos nativos del Locator directamente
+    async login(username: string, password: string): Promise<void> {
+      await this.usernameInput.fill(username);
+      await this.passwordInput.fill(password);
+      await this.loginButton.click();
+    }
+    
+    async getErrorMessage(): Promise<string> {
+      return await this.errorMessage.textContent() || '';
     }
   }
   ```
@@ -145,16 +160,72 @@ Recibirás como input una URL de un sitio web para analizar y automatizar.
 - **Test Files**: Usa feature-name.spec.ts (ej: "authentication.spec.ts")
 - **Selectores**: Usa nombres descriptivos en camelCase
 
-### Selectores
-- Prioriza selectores CSS estables (data-testid, id, class)
-- Evita selectores frágiles (xpath complejos, selectores dinámicos)
-- Usa descriptores claros: `private readonly loginButton = '#login-btn';`
+### Localizadores (Locators)
+- **PRIORIDAD 1**: Usa localizadores integrados de Playwright siguiendo las mejores prácticas:
+  1. `getByRole()` - Para elementos con roles ARIA (botones, links, headings, etc.)
+  2. `getByLabel()` - Para inputs asociados con labels
+  3. `getByPlaceholder()` - Para inputs con placeholder
+  4. `getByText()` - Para elementos con texto visible
+  5. `getByTestId()` - Para elementos con data-testid
+- **PRIORIDAD 2**: Si los localizadores integrados no son posibles, usa `page.locator()` con:
+  - Atributos `data-test` o `data-testid`
+  - IDs únicos y estables
+  - Clases CSS estables
+- **EVITAR**: XPath complejos, selectores dinámicos, índices numéricos
+- **Declaración**: Todos los locators deben ser `private readonly` de tipo `Locator`
+- **Inicialización**: Todos los locators deben inicializarse en el constructor
+- Ejemplo:
+  ```typescript
+  // ✅ CORRECTO - Localizadores integrados
+  private readonly submitButton: Locator;
+  
+  constructor(page: Page) {
+    super(page);
+    this.submitButton = page.getByRole('button', { name: 'Submit' });
+  }
+  
+  // ❌ INCORRECTO - String selector
+  private readonly submitButton = '#submit-btn';
+  ```
 
 ### Métodos de Página
 - Cada método debe representar una acción lógica del usuario
 - Usa métodos async/await
+- **IMPORTANTE: Usa métodos nativos de Locator directamente como primera opción**:
+  - `await this.loginButton.click()`
+  - `await this.usernameInput.fill(username)`
+  - `await this.errorMessage.isVisible()`
+  - `await this.errorMessage.textContent()`
+  - `await this.element.waitFor({ state: 'visible' })`
+- **Usa métodos de BasePage SOLO cuando el beneficio sea significativo**:
+  - Navegación compleja: `await this.navigateTo(url)`
+  - Waits de URL: `await this.waitForURLContains('fragment')`
+  - Lógica de negocio compleja compartida entre múltiples páginas
+  - Helpers específicos del proyecto que agreguen valor real
+- **NO uses wrappers de BasePage para acciones simples** (click, fill, isVisible, etc.)
 - Incluye validaciones cuando sea apropiado
 - Documenta métodos complejos con comentarios
+- Ejemplo de cuándo usar cada enfoque:
+  ```typescript
+  // ✅ CORRECTO - Métodos nativos de Locator
+  async login(username: string, password: string): Promise<void> {
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
+  }
+  
+  // ✅ CORRECTO - BasePage para navegación
+  async navigateToLoginPage(): Promise<void> {
+    await this.navigateTo('https://example.com/login');
+    await this.waitForURLContains('login');
+  }
+  
+  // ❌ INCORRECTO - Usar BasePage para acciones simples
+  async login(username: string, password: string): Promise<void> {
+    await this.fillInput(this.usernameInput, username); // NO hacer esto
+    await this.clickElement(this.loginButton); // NO hacer esto
+  }
+  ```
 
 ### Tests
 - Usa `test.describe()` para agrupar tests relacionados
@@ -203,8 +274,10 @@ Al finalizar, proporciona:
 5. Instrucciones para ejecutar los tests: `npm run test:web -- tests/web/<AppName>/`
 
 ## Notas Importantes
-- Siempre verifica que los selectores sean únicos y estables
-- Implementa waits explícitos cuando sea necesario para manejar asíncronía
-- Usa las utilidades proporcionadas por BasePage en lugar de métodos directos de page
+- **Patrón de Locators**: Siempre declara locators como `private readonly` de tipo `Locator` e inicialízalos en el constructor
+- **Prioriza localizadores integrados**: Usa `getByRole()`, `getByLabel()`, `getByText()`, etc. siguiendo las mejores prácticas de Playwright
+- **Métodos nativos**: Usa métodos nativos del Locator (`.click()`, `.fill()`, `.isVisible()`) en lugar de wrappers de BasePage
+- Siempre verifica que los localizadores sean únicos y estables
+- Playwright maneja auto-waiting, pero usa `.waitFor()` cuando necesites control explícito
 - Mantén los tests simples y enfocados en un solo flujo por test
 - Documenta cualquier decisión importante o limitación encontrada
